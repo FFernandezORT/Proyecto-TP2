@@ -1,0 +1,29 @@
+{
+  "name": "proyecto-tp2",
+  "version": "1.0.0",
+  "description": "Proyecto de plataforma de gestión y reserva de eventos",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --env-file .env .",
+    "dev": "node --env-file .env.dev --watch .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FFernandezORT/Proyecto-TP2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/FFernandezORT/Proyecto-TP2/issues"
+  },
+  "homepage": "https://github.com/FFernandezORT/Proyecto-TP2#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mysql2": "^3.22.5",
+    "sequelize": "^6.37.8"
+  }
+}
