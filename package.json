@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Proyecto de plataforma de gestión y reserva de eventos",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start": "node --env-file .env .",
     "dev": "node --env-file .env.dev --watch .",
@@ -15,12 +16,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/FFernandezORT/Proyecto-TP2/issues"
   },
   "homepage": "https://github.com/FFernandezORT/Proyecto-TP2#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mysql2": "^3.22.5",
