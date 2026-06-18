@@ -1,10 +1,10 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from "express";
+import eventosRoutes from "./eventosRoutes.js";
+import categoriasRoutes from "./categoriasRoutes.js";
 
-const eventosRoutes = require('./eventosRoutes');
-const categoriasRoutes = require('./categoriasRoutes');
+const router = Router();
 
 router.use('/eventos', eventosRoutes);
 router.use('/categorias', categoriasRoutes);
 
-module.exports = router;
+export default router;

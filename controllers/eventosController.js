@@ -1,6 +1,7 @@
-const { Eventos, Categoria } = require("../models");
+import { Eventos, Categoria } from "../models/index.js";
 
 const eventosController = {
+  
   getAllEventos: async (req, res) => {
     try {
       const eventos = await Eventos.findAll({
@@ -153,4 +154,4 @@ const eventosController = {
   },
 };
 
-module.exports = eventosController;
+export default eventosController;

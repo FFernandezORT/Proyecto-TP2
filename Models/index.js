@@ -1,5 +1,5 @@
-import Categoria from "./Categoria";
-import Eventos from "./Eventos";
+import Categoria from "./categoria.js";
+import Eventos from "./eventos.js";
 
 Categoria.hasMany(Eventos, { foreignKey: "categoriaId" });
 

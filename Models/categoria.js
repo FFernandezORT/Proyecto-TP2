@@ -18,6 +18,8 @@ Categoria.init({
         type: DataTypes.STRING(255),
         allowNull: false
     }
+}, {
+    sequelize
 });
 
 export default Categoria;
