@@ -1,16 +1,16 @@
-const { Event, Category } = require("../models");
+const { Eventos, Categoria } = require("../models");
 
-const eventController = {
-  getAllEvents: async (req, res) => {
+const eventosController = {
+  getAllEventos: async (req, res) => {
     try {
-      const events = await Event.findAll({
+      const eventos = await Eventos.findAll({
         include: {
-          model: Category,
-          as: "category",
-          attributes: ["id", "name"],
+          model: Categoria,
+          as: "categorias",
+          attributes: ["id", "nombre"],
         },
       });
-      return res.status(200).json(events);
+      return res.status(200).json(eventos);
     } catch (error) {
       return res.status(500).json({
         message: "Error al obtener los eventos.",
@@ -19,14 +19,14 @@ const eventController = {
     }
   },
 
-  getEventById: async (req, res) => {
+  getEventoById: async (req, res) => {
     try {
       const { id } = req.params;
-      const event = await Event.findByPk(id, {
+      const event = await Eventos.findByPk(id, {
         include: {
-          model: Category,
-          as: "category",
-          attributes: ["id", "name"],
+          model: Categoria,
+          as: "categorias",
+          attributes: ["id", "nombre"],
         },
       });
 
@@ -43,30 +43,30 @@ const eventController = {
     }
   },
 
-  createEvent: async (req, res) => {
+  createEvento: async (req, res) => {
     try {
-      const { title, description, date, location, categoryId } = req.body;
+      const { titulo, descripcion, fecha, ubicacion, categoriaId } = req.body;
 
-      if (categoryId) {
-        const categoryExists = await Category.findByPk(categoryId);
-        if (!categoryExists) {
+      if (categoriaId) {
+        const categoriaExists = await Categoria.findByPk(categoriaId);
+        if (!categoriaExists) {
           return res
             .status(400)
             .json({ message: "La categoría especificada no existe." });
         }
       }
 
-      const newEvent = await Event.create({
-        title,
-        description,
-        date,
-        location,
-        categoryId,
+      const newEvento = await Eventos.create({
+        titulo,
+        descripcion,
+        fecha,
+        ubicacion,
+        categoriaId,
       });
 
       return res.status(201).json({
         message: "Evento creado con éxito.",
-        data: newEvent,
+        data: newEvento,
       });
     } catch (error) {
       if (error.name === "SequelizeValidationError") {
@@ -82,38 +82,38 @@ const eventController = {
     }
   },
 
-  updateEvent: async (req, res) => {
+  updateEvento: async (req, res) => {
     try {
       const { id } = req.params;
-      const { title, description, date, location, categoryId } = req.body;
+      const { titulo, descripcion, fecha, ubicacion, categoriaId } = req.body;
 
-      const event = await Event.findByPk(id);
-      if (!event) {
+      const evento = await Eventos.findByPk(id);
+      if (!evento) {
         return res
           .status(404)
           .json({ message: "Evento no encontrado para actualizar." });
       }
 
-      if (categoryId) {
-        const categoryExists = await Category.findByPk(categoryId);
-        if (!categoryExists) {
+      if (categoriaId) {
+        const categoriaExists = await Categoria.findByPk(categoriaId);
+        if (!categoriaExists) {
           return res
             .status(400)
             .json({ message: "La nueva categoría especificada no existe." });
         }
       }
 
-      await event.update({
-        title: title || event.title,
-        description: description || event.description,
-        date: date || event.date,
-        location: location || event.location,
-        categoryId: categoryId || event.categoryId,
+      await evento.update({
+        titulo: titulo || evento.titulo,
+        descripcion: descripcion || evento.descripcion,
+        fecha: fecha || evento.fecha,
+        ubicacion: ubicacion || evento.ubicacion,
+        categoriaId: categoriaId || evento.categoriaId,
       });
 
       return res.status(200).json({
         message: "Evento actualizado con éxito.",
-        data: event,
+        data: evento,
       });
     } catch (error) {
       if (error.name === "SequelizeValidationError") {
@@ -129,18 +129,18 @@ const eventController = {
     }
   },
 
-  deleteEvent: async (req, res) => {
+  deleteEvento: async (req, res) => {
     try {
       const { id } = req.params;
-      const event = await Event.findByPk(id);
+      const evento = await Eventos.findByPk(id);
 
-      if (!event) {
+      if (!evento) {
         return res
           .status(404)
           .json({ message: "Evento no encontrado para eliminar." });
       }
 
-      await event.destroy();
+      await evento.destroy();
       return res
         .status(200)
         .json({ message: "Evento eliminado correctamente." });
@@ -153,4 +153,4 @@ const eventController = {
   },
 };
 
-module.exports = eventController;
+module.exports = eventosController;

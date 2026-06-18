@@ -1,17 +1,17 @@
-const { Category, Event } = require('../models');
+const { Categoria, Eventos } = require('../models');
 
-const categoryController = {
+const categoriaController = {
 
-  getAllCategories: async (req, res) => {
+  getAllCategorias: async (req, res) => {
     try {
-      const categories = await Category.findAll({
+      const categorias = await Categoria.findAll({
         include: {
-          model: Event,
-          as: 'events',
-          attributes: ['id', 'title', 'date']
+          model: Eventos,
+          as: 'eventos',
+          attributes: ['id', 'titulo', 'descripcion', 'fecha', 'ubicacion']
         }
       });
-      return res.status(200).json(categories);
+      return res.status(200).json(categorias);
     } catch (error) {
       return res.status(500).json({ 
         message: 'Error al obtener las categorías.', 
@@ -20,22 +20,22 @@ const categoryController = {
     }
   },
 
-  getCategoryById: async (req, res) => {
+  getCategoriaById: async (req, res) => {
     try {
       const { id } = req.params;
-      const category = await Category.findByPk(id, {
+      const categoria = await Categoria.findByPk(id, {
         include: {
-          model: Event,
-          as: 'events',
-          attributes: ['id', 'title', 'date', 'location']
+          model: Eventos,
+          as: 'eventos',
+          attributes: ['id', 'titulo', 'descripcion', 'fecha', 'ubicacion']
         }
       });
 
-      if (!category) {
+      if (!categoria) {
         return res.status(404).json({ message: 'Categoría no encontrada.' });
       }
 
-      return res.status(200).json(category);
+      return res.status(200).json(categoria);
     } catch (error) {
       return res.status(500).json({ 
         message: 'Error al obtener la categoría.', 
@@ -44,18 +44,18 @@ const categoryController = {
     }
   },
 
-  createCategory: async (req, res) => {
+  createCategoria: async (req, res) => {
     try {
-      const { name, description } = req.body;
+      const { nombre, descripcion } = req.body;
 
-      const newCategory = await Category.create({
-        name,
-        description
+      const newCategoria = await Categoria.create({
+        nombre,
+        descripcion
       });
 
       return res.status(201).json({
         message: 'Categoría creada con éxito.',
-        data: newCategory
+        data: newCategoria
       });
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {
@@ -69,24 +69,24 @@ const categoryController = {
     }
   },
 
-  updateCategory: async (req, res) => {
+  updateCategoria: async (req, res) => {
     try {
       const { id } = req.params;
-      const { name, description } = req.body;
+      const { nombre, descripcion } = req.body;
 
-      const category = await Category.findByPk(id);
-      if (!category) {
+      const categoria = await Categoria.findByPk(id);
+      if (!categoria) {
         return res.status(404).json({ message: 'Categoría no encontrada para actualizar.' });
       }
 
-      await category.update({
-        name: name || category.name,
-        description: description || category.description
+      await categoria.update({
+        nombre: nombre || categoria.nombre,
+        descripcion: descripcion || categoria.descripcion
       });
 
       return res.status(200).json({
         message: 'Categoría actualizada con éxito.',
-        data: category
+        data: categoria
       });
     } catch (error) {
       if (error.name === 'SequelizeValidationError') {
@@ -100,23 +100,23 @@ const categoryController = {
     }
   },
 
-  deleteCategory: async (req, res) => {
+  deleteCategoria: async (req, res) => {
     try {
       const { id } = req.params;
-      const category = await Category.findByPk(id);
+      const categoria = await Categoria.findByPk(id);
 
-      if (!category) {
+      if (!categoria) {
         return res.status(404).json({ message: 'Categoría no encontrada para eliminar.' });
       }
 
-      const countEvents = await Event.count({ where: { categoryId: id } });
-      if (countEvents > 0) {
+      const countEventos = await Eventos.count({ where: { categoriaId: id } });
+      if (countEventos > 0) {
         return res.status(400).json({ 
           message: 'No se puede eliminar la categoría porque tiene eventos asociados a ella.' 
         });
       }
 
-      await category.destroy();
+      await categoria.destroy();
       return res.status(200).json({ message: 'Categoría eliminada correctamente.' });
     } catch (error) {
       return res.status(500).json({ 
@@ -127,4 +127,4 @@ const categoryController = {
   }
 };
 
-module.exports = categoryController;
+module.exports = categoriaController;
