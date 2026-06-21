@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const eventosController = require('../controllers/eventosController');
+import { Router } from "express";
+import eventosController from "../container/eventosContainer.js";
 
-router.get('/', eventosController.getAllEventos);
-router.get('/:id', eventosController.getEventoById);
-router.post('/', eventosController.createEvento);
-router.put('/:id', eventosController.updateEvento);
-router.delete('/:id', eventosController.deleteEvento);
+const eventosRoutes = Router();
 
-module.exports = router;
+eventosRoutes.get('/', eventosController.getAllEventos);
+eventosRoutes.get('/:id', eventosController.getEventoById);
+eventosRoutes.post('/', eventosController.createEvento);
+eventosRoutes.put('/:id', eventosController.updateEvento);
+eventosRoutes.delete('/:id', eventosController.deleteEvento);
+
+export default eventosRoutes;
