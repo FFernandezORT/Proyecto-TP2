@@ -1,19 +1,30 @@
 import express from "express";
-import cookieParser from "cookie-parser";
 import router from "./routes/router.js";
-import "./connection/sequielize.js";
+import morgan from "morgan";
+import sequelize from "./connection/sequielize.js";
 import { SERVER_PORT } from "./config/config.js";
-import { log } from "./middlewares/log.js";
+import cookieParser from "cookie-parser";
+
+
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json());   
+app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(log);
+
+
+await sequelize.sync({force: true})
+try {
+  await sequelize.sync();
+  console.log("✅ Tablas sincronizadas correctamente");
+} catch (error) {
+  console.error("❌ Error al sincronizar:", error);
+}
 
 app.use(router);
 
-app.listen(SERVER_PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${SERVER_PORT}`);
-});
+app.listen(SERVER_PORT, () => (
+    console.log(`Servidor en puerto: http://localhost:${SERVER_PORT}`)
+))

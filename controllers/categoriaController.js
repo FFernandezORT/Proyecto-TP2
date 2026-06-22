@@ -1,130 +1,61 @@
-import { Categoria, Eventos } from '../models/index.js';
+import CategoriaService from "../services/CategoriaServices.js";
 
-const categoriaController = {
 
-  getAllCategorias: async (req, res) => {
-    try {
-      const categorias = await Categoria.findAll({
-        include: {
-          model: Eventos,
-          as: 'eventos',
-          attributes: ['id', 'titulo', 'descripcion', 'fecha', 'ubicacion']
-        }
-      });
-      return res.status(200).json(categorias);
-    } catch (error) {
-      return res.status(500).json({ 
-        message: 'Error al obtener las categorías.', 
-        error: error.message 
-      });
-    }
-  },
 
-  getCategoriaById: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const categoria = await Categoria.findByPk(id, {
-        include: {
-          model: Eventos,
-          as: 'eventos',
-          attributes: ['id', 'titulo', 'descripcion', 'fecha', 'ubicacion']
-        }
-      });
-
-      if (!categoria) {
-        return res.status(404).json({ message: 'Categoría no encontrada.' });
-      }
-
-      return res.status(200).json(categoria);
-    } catch (error) {
-      return res.status(500).json({ 
-        message: 'Error al obtener la categoría.', 
-        error: error.message 
-      });
-    }
-  },
-
-  createCategoria: async (req, res) => {
-    try {
-      const { nombre, descripcion } = req.body;
-
-      const newCategoria = await Categoria.create({
-        nombre,
-        descripcion
-      });
-
-      return res.status(201).json({
-        message: 'Categoría creada con éxito.',
-        data: newCategoria
-      });
-    } catch (error) {
-      if (error.name === 'SequelizeValidationError') {
-        const messages = error.errors.map(err => err.message);
-        return res.status(400).json({ message: 'Error de validación', errors: messages });
-      }
-      return res.status(500).json({ 
-        message: 'Error al crear la categoría.', 
-        error: error.message 
-      });
-    }
-  },
-
-  updateCategoria: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { nombre, descripcion } = req.body;
-
-      const categoria = await Categoria.findByPk(id);
-      if (!categoria) {
-        return res.status(404).json({ message: 'Categoría no encontrada para actualizar.' });
-      }
-
-      await categoria.update({
-        nombre: nombre || categoria.nombre,
-        descripcion: descripcion || categoria.descripcion
-      });
-
-      return res.status(200).json({
-        message: 'Categoría actualizada con éxito.',
-        data: categoria
-      });
-    } catch (error) {
-      if (error.name === 'SequelizeValidationError') {
-        const messages = error.errors.map(err => err.message);
-        return res.status(400).json({ message: 'Error de validación', errors: messages });
-      }
-      return res.status(500).json({ 
-        message: 'Error al actualizar la categoría.', 
-        error: error.message 
-      });
-    }
-  },
-
-  deleteCategoria: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const categoria = await Categoria.findByPk(id);
-
-      if (!categoria) {
-        return res.status(404).json({ message: 'Categoría no encontrada para eliminar.' });
-      }
-
-      const countEventos = await Eventos.count({ where: { categoriaId: id } });
-      if (countEventos > 0) {
-        return res.status(400).json({ 
-          message: 'No se puede eliminar la categoría porque tiene eventos asociados a ella.' 
-        });
-      }
-
-      await categoria.destroy();
-      return res.status(200).json({ message: 'Categoría eliminada correctamente.' });
-    } catch (error) {
-      return res.status(500).json({ 
-        message: 'Error al eliminar la categoría.', 
-        error: error.message 
-      });
-    }
+class CategoriaController {
+  constructor(categoriaService) {
+    this.categoriaService = categoriaService;
   }
-};
 
-export default categoriaController;
+  getAllCategorias = async (req, res) => {
+    try {
+      console.log('CategoriasController:' , req.cookies.payload);
+      const data = req.query;
+      const categorias = await this.categoriaService.getAllCategorias();
+      res.status(200).send({ success: true, message: categorias });
+    } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+    }
+  };      
+
+  getCategoriaById = async (req, res) => {  
+  try {
+    const { id } = req.params;
+    const categoria = await this.categoriaService.getCategoriaById(id);
+    res.status(200).send({ success: true, message: categoria });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  } };
+
+  createCategoria = async (req, res) => {
+    try {
+      const categoriaData = req.body;
+      const newCategoria = await this.categoriaService.createCategoria(categoriaData);
+      res.status(201).send({ success: true, message: newCategoria });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  };
+
+  updateCategoria = async (req, res) => {
+    try {     const { id } = req.params;
+      const categoriaData = req.body;
+      const updatedCategoria = await this.categoriaService.updateCategoria({ id, categoriaData });
+      res.status(200).send({ success: true, message: updatedCategoria });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    } 
+  };
+
+  deleteCategoria = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const deletedCategoria = await this.categoriaService.deleteCategoria(id);
+      res.status(200).send({ success: true, message: deletedCategoria });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }   
+  };
+}
+
+export default CategoriaController;

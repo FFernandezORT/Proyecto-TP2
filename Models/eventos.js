@@ -28,9 +28,15 @@ Eventos.init({
     categoriaId: {
         type: DataTypes.INTEGER,
         allowNull: false
-    }
-}, {
-    sequelize
-});
+    },
+
+},
+{
+    sequelize, 
+    modelName: "Eventos",
+},
+);
+
+
 
 export default Eventos;

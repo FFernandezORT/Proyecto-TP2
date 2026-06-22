@@ -18,8 +18,11 @@ Categoria.init({
         type: DataTypes.STRING(255),
         allowNull: false
     }
-}, {
-    sequelize
+},
+
+{
+    sequelize, tableName: "Categoria" 
+
 });
 
 export default Categoria;
