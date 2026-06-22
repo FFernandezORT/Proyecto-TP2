@@ -18,9 +18,9 @@ app.use(cookieParser());
 await sequelize.sync({force: false})
 try {
   await sequelize.sync();
-  console.log("✅ Tablas sincronizadas correctamente");
+  console.log("Tablas sincronizadas");
 } catch (error) {
-  console.error("❌ Error al sincronizar:", error);
+  console.error("Error al sincronizar las tablas:", error);
 }
 
 app.use(router);
