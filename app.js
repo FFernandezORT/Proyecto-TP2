@@ -15,7 +15,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 
 
-await sequelize.sync({force: true})
+await sequelize.sync({force: false})
 try {
   await sequelize.sync();
   console.log("✅ Tablas sincronizadas correctamente");
