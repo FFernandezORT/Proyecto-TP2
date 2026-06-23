@@ -1,12 +1,13 @@
 import { Sequelize } from "sequelize";
+import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME, DB_DIALECT } from "../config/config.js";
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
+  DB_NAME,
+  DB_USER,
+  DB_PASSWORD,
   {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
+    host: DB_HOST,
+    dialect: DB_DIALECT,
     port: process.env.DB_PORT,
   }
 );
