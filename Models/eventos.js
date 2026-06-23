@@ -33,7 +33,7 @@ Eventos.init({
 },
 {
     sequelize, 
-    modelName: "Eventos",
+    modelName: "Evento",
 },
 );
 

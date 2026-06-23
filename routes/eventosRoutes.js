@@ -3,7 +3,6 @@ import eventosController from "../container/eventosContainer.js";
 
 const eventosRoutes = Router();
 
-eventosRoutes.get('/', eventosController.getAllEventos);
 eventosRoutes.get('/:id', eventosController.getEventoById);
 eventosRoutes.post('/', eventosController.createEvento);
 eventosRoutes.put('/:id', eventosController.updateEvento);

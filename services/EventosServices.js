@@ -4,15 +4,6 @@ class EventosServices {
     this.categoria = categoria;
   }
 
-  getAllEventos = async () => {
-    return await this.eventos.findAll({
-      include: {
-        model: this.categoria,
-        attributes: ["id", "nombre"],
-      },
-    });
-  };
-
   getEventoById = async (id) => {
     const evento = await this.eventos.findByPk(id, {
       include: {

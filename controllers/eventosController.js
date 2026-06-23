@@ -3,15 +3,6 @@ class EventosController {
     this.eventosService = eventosService;
   }
 
-  getAllEventos = async (req, res) => {
-    try {
-      const eventos = await this.eventosService.getAllEventos();
-      res.status(200).send({ success: true, message: eventos });
-    } catch (error) {
-      res.status(400).json({ success: false, message: error.message });
-    }
-  };
-
   getEventoById = async (req, res) => {
     try {
       const { id } = req.params;

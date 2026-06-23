@@ -7,17 +7,6 @@ class CategoriaController {
     this.categoriaService = categoriaService;
   }
 
-  getAllCategorias = async (req, res) => {
-    try {
-      console.log('CategoriasController:' , req.cookies.payload);
-      const data = req.query;
-      const categorias = await this.categoriaService.getAllCategorias();
-      res.status(200).send({ success: true, message: categorias });
-    } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
-    }
-  };      
-
   getCategoriaById = async (req, res) => {  
   try {
     const { id } = req.params;
