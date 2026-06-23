@@ -29,7 +29,7 @@ class CategoriaController {
   updateCategoria = async (req, res) => {
     try {     const { id } = req.params;
       const categoriaData = req.body;
-      const updatedCategoria = await this.categoriaService.updateCategoria({ id, categoriaData });
+      const updatedCategoria = await this.categoriaService.updateCategoria( id, categoriaData );
       res.status(200).send({ success: true, message: updatedCategoria });
     } catch (error) {
       res.status(400).json({ success: false, message: error.message });
